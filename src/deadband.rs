@@ -50,7 +50,7 @@ impl DeadbandDetector {
     /// values to compare with.
     pub fn is_in_deadband(&mut self, val: f64) -> bool {
         let diff = val - self.prev_val;
-        if diff / self.prev_val > self.threshold {
+        if self.prev_val == 0.0 || (diff / self.prev_val).abs() > self.threshold {
             self.prev_val = val;
             false
         } else {
