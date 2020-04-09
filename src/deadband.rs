@@ -27,10 +27,11 @@
 /// assert!(!deadband_detector.is_in_deadband(&Vector3::new(0.12, 0.12, 0.12)));
 /// assert!(!deadband_detector.is_in_deadband(&Vector3::new(0.0, 0.0, 0.0)));
 /// ```
-use nalgebra::allocator::Allocator;
-use nalgebra::dimension::{Dim, DimName};
-use nalgebra::DefaultAllocator;
-use nalgebra::{RealField, VectorN};
+use nalgebra::{
+    allocator::Allocator,
+    dimension::{Dim, DimName},
+    DefaultAllocator, RealField, VectorN,
+};
 
 pub struct DeadbandDetector<N, D>
 where

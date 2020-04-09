@@ -3,10 +3,11 @@
 //! Similar to other passivity apporaches, but less conservative. While most
 //! passivity approaches do not allow a system to generate energy the ISS
 //! approach allows to generate energy that is bounded by a constant. [[1]](https://ieeexplore.ieee.org/abstract/document/7139013)
-use nalgebra::allocator::Allocator;
-use nalgebra::dimension::{Dim, DimName};
-use nalgebra::DefaultAllocator;
-use nalgebra::{RealField, VectorN};
+use nalgebra::{
+    allocator::Allocator,
+    dimension::{Dim, DimName},
+    DefaultAllocator, RealField, VectorN,
+};
 use num_traits::Zero;
 
 pub struct ISS<N, D>
