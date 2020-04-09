@@ -32,6 +32,7 @@ where
     /// `mu_max` should be set so thtat 0 <= f'(x) <= `mu_max` is fullfilled
     /// and `mu_max` != 0.
     pub fn new(tau: N, mu_max: N) -> Self {
+        assert!(tau >= N::zero());
         assert!(mu_max > N::zero());
         Self {
             tau,
