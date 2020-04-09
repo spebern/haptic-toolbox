@@ -27,26 +27,33 @@
 /// assert!(!deadband_detector.is_in_deadband(&Vector3::new(0.12, 0.12, 0.12)));
 /// assert!(!deadband_detector.is_in_deadband(&Vector3::new(0.0, 0.0, 0.0)));
 /// ```
-use nalgebra::Vector3;
+use nalgebra::allocator::Allocator;
+use nalgebra::dimension::{Dim, DimName};
+use nalgebra::DefaultAllocator;
+use nalgebra::{RealField, VectorN};
 
-pub struct DeadbandDetector {
-    prev_vals: Vector3<f64>,
-    threshold: f64,
-    deadband: f64,
+pub struct DeadbandDetector<N, D>
+where
+    N: RealField,
+    D: Dim,
+    DefaultAllocator: Allocator<N, D>,
+{
+    prev_vals: VectorN<N, D>,
+    threshold: N,
+    deadband: N,
 }
 
-impl Default for DeadbandDetector {
-    fn default() -> Self {
-        Self::new(0.1, Vector3::zeros())
-    }
-}
-
-impl DeadbandDetector {
+impl<N, D> DeadbandDetector<N, D>
+where
+    N: RealField,
+    D: Dim + DimName,
+    DefaultAllocator: Allocator<N, D>,
+{
     /// Creates a new `DeadbandDetector`.
-    pub fn new(threshold: f64, initial_vals: Vector3<f64>) -> Self {
+    pub fn new(threshold: N, initial_vals: VectorN<N, D>) -> Self {
         let mut deadband_detector = Self {
             prev_vals: initial_vals,
-            deadband: 0.0,
+            deadband: N::zero(),
             threshold,
         };
         deadband_detector.set_deadband();
@@ -54,10 +61,10 @@ impl DeadbandDetector {
     }
 
     /// Checks if `vals` are in the deadband of the previously saved vals.
-    pub fn is_in_deadband(&mut self, vals: &Vector3<f64>) -> bool {
-        let diff = (self.prev_vals - vals).norm();
+    pub fn is_in_deadband(&mut self, vals: &VectorN<N, D>) -> bool {
+        let diff = (&self.prev_vals - vals).norm();
         if diff > self.deadband {
-            self.prev_vals = *vals;
+            self.prev_vals = vals.clone();
             self.set_deadband();
             false
         } else {
@@ -66,16 +73,16 @@ impl DeadbandDetector {
     }
 
     /// Sets the new deadband threshold.
-    pub fn set_threshold(&mut self, threshold: f64) {
+    pub fn set_threshold(&mut self, threshold: N) {
         assert!(
-            threshold >= 0.0 && threshold <= 1.0,
+            threshold >= N::zero() && threshold <= N::one(),
             "cannot assign threshold outside of range [0.0, 1.0]"
         );
         self.threshold = threshold;
     }
 
     /// Returns the current deadband threshold.
-    pub fn threshold(&self) -> f64 {
+    pub fn threshold(&self) -> N {
         self.threshold
     }
 
