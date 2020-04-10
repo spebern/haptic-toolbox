@@ -80,7 +80,7 @@ where
     }
 
     /// Sets the wave impedance b.
-    pub fn set_tau(&mut self, b: N) {
+    pub fn set_b(&mut self, b: N) {
         self.b = b;
     }
 }
