@@ -28,7 +28,6 @@ where
 {
     /// Creates a new WAVE controller with the wave impedance `b`.
     pub fn new(b: N) -> Self {
-        assert!(b > N::zero());
         Self {
             b,
             _phantom: PhantomData,
