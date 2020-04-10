@@ -73,4 +73,14 @@ where
     pub fn calculate_vel_s(&self, u_s: &VectorN<N, D>, vel_s: &VectorN<N, D>) -> VectorN<N, D> {
         (u_s + vel_s) / (self.b * convert(2.0))
     }
+
+    /// Returns wave impedance b.
+    pub fn b(&self) -> N {
+        self.b
+    }
+
+    /// Sets the wave impedance b.
+    pub fn set_tau(&mut self, b: N) {
+        self.b = b;
+    }
 }
