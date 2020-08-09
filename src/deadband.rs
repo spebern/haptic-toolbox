@@ -33,6 +33,7 @@ use nalgebra::{
     DefaultAllocator, RealField, VectorN,
 };
 
+#[derive(Debug)]
 pub struct DeadbandDetector<N, D>
 where
     N: RealField,
@@ -75,10 +76,7 @@ where
 
     /// Sets the new deadband threshold.
     pub fn set_threshold(&mut self, threshold: N) {
-        assert!(
-            threshold >= N::zero() && threshold <= N::one(),
-            "cannot assign threshold outside of range [0.0, 1.0]"
-        );
+        assert!(threshold >= N::zero(), "cannot assign a negative threshold");
         self.threshold = threshold;
     }
 
