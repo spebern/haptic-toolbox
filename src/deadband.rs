@@ -85,6 +85,11 @@ where
         self.threshold
     }
 
+    /// Sets the values the following ones should be compared to.
+    pub fn set_prev_vals(&mut self, vals: &VectorN<N, D>) {
+        self.prev_vals = vals.clone();
+    }
+
     fn set_deadband(&mut self) {
         self.deadband = self.threshold * self.prev_vals.norm();
     }
